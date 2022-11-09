@@ -1,6 +1,7 @@
-vn\vnpay\tink\crypter\DigitalSignatureCrypter.class
+vn\vnpay\tink\cipher\Cipher.class
+vn\vnpay\tink\facade\AppFacade.class
 vn\vnpay\tink\App.class
-vn\vnpay\tink\crypter\Crypter.class
-vn\vnpay\tink\crypter\HmacCrypter.class
-vn\vnpay\tink\crypter\ShaCrypter.class
-vn\vnpay\tink\crypter\AesCrypter.class
+vn\vnpay\tink\cipher\ShaCipher.class
+vn\vnpay\tink\cipher\DigitalSignatureCipher.class
+vn\vnpay\tink\cipher\HmacCipher.class
+vn\vnpay\tink\cipher\AesCipher.class
