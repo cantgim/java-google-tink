@@ -5,7 +5,7 @@ import com.google.crypto.tink.PublicKeySign;
 import com.google.crypto.tink.PublicKeyVerify;
 import com.google.crypto.tink.signature.SignatureConfig;
 import lombok.extern.slf4j.Slf4j;
-import vn.vnpay.tink.result.Result;
+import vn.vnpay.tinktink.result.Result;
 
 import java.io.FileOutputStream;
 import java.security.GeneralSecurityException;

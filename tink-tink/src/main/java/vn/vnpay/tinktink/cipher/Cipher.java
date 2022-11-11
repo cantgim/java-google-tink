@@ -3,7 +3,7 @@ package vn.vnpay.tinktink.cipher;
 import com.google.crypto.tink.CleartextKeysetHandle;
 import com.google.crypto.tink.JsonKeysetReader;
 import com.google.crypto.tink.KeysetHandle;
-import vn.vnpay.tink.result.Result;
+import vn.vnpay.tinktink.result.Result;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;

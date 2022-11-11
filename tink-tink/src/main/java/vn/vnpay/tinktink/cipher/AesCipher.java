@@ -3,7 +3,7 @@ package vn.vnpay.tinktink.cipher;
 import com.google.crypto.tink.Aead;
 import com.google.crypto.tink.aead.AeadConfig;
 import lombok.extern.slf4j.Slf4j;
-import vn.vnpay.tink.result.Result;
+import vn.vnpay.tinktink.result.Result;
 
 import java.io.FileOutputStream;
 import java.security.GeneralSecurityException;
