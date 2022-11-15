@@ -23,7 +23,6 @@ public class DigitalSignatureCipher extends Cipher {
     @Override
     public Result encrypt(byte[] data, byte[] aad) {
         try {
-            log.info("Start encrypt with digital signature");
             PublicKeySign signer = keysetHandle.getPrimitive(PublicKeySign.class);
             try (FileOutputStream stream = new FileOutputStream(
                     String.valueOf(System.currentTimeMillis()))) {
@@ -42,7 +41,6 @@ public class DigitalSignatureCipher extends Cipher {
     @Override
     public Result decrypt(byte[] data, byte[] aad) {
         try {
-            log.info("Start verify with digital signature");
             KeysetHandle publicKeysetHandle = keysetHandle.getPublicKeysetHandle();
             PublicKeyVerify verifier = publicKeysetHandle.getPrimitive(PublicKeyVerify.class);
             verifier.verify(signature, data);

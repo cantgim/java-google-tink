@@ -21,7 +21,6 @@ public class HmacCipher extends Cipher {
     @Override
     public Result encrypt(byte[] plain, byte[] aad) {
         try {
-            log.info("Start encrypt with hmac");
             Mac mac = keysetHandle.getPrimitive(Mac.class);
             try (FileOutputStream stream =
                          new FileOutputStream(String.valueOf(System.currentTimeMillis()))) {
@@ -40,7 +39,6 @@ public class HmacCipher extends Cipher {
     @Override
     public Result decrypt(byte[] data, byte[] aad) {
         try {
-            log.info("Start decrypt with hmac");
             Mac mac = keysetHandle.getPrimitive(Mac.class);
             mac.verifyMac(tag, data);
             return Result.SUCCESS;

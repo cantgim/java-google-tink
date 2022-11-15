@@ -26,7 +26,6 @@ public class AesCipher extends Cipher {
     @Override
     public Result encrypt(byte[] plain, byte[] aad) {
         try {
-            log.info("Start encrypt with aes");
             Aead aead = keysetHandle.getPrimitive(Aead.class);
             try (FileOutputStream stream = new FileOutputStream(
                     String.valueOf(System.currentTimeMillis()))) {
@@ -42,10 +41,14 @@ public class AesCipher extends Cipher {
         }
     }
 
+    /**
+     * @param cypher
+     * @param aad
+     * @return
+     */
     @Override
     public Result decrypt(byte[] cypher, byte[] aad) {
         try {
-            log.info("Start decrypt with aes");
             Aead aead = keysetHandle.getPrimitive(Aead.class);
             try (FileOutputStream stream = new FileOutputStream(
                     String.valueOf(System.currentTimeMillis()))) {
