@@ -15,7 +15,8 @@ public class DigitalSignatureCipher extends Cipher {
 
     private final byte[] signature;
 
-    public DigitalSignatureCipher(byte[] signature) {
+    public DigitalSignatureCipher(byte[] signature) throws GeneralSecurityException {
+        SignatureConfig.register();
         this.signature = signature;
     }
 
@@ -23,7 +24,6 @@ public class DigitalSignatureCipher extends Cipher {
     public Result encrypt(byte[] data, byte[] aad) {
         try {
             log.info("Start encrypt with digital signature");
-            SignatureConfig.register();
             PublicKeySign signer = keysetHandle.getPrimitive(PublicKeySign.class);
             try (FileOutputStream stream = new FileOutputStream(
                     String.valueOf(System.currentTimeMillis()))) {
@@ -43,7 +43,6 @@ public class DigitalSignatureCipher extends Cipher {
     public Result decrypt(byte[] data, byte[] aad) {
         try {
             log.info("Start verify with digital signature");
-            SignatureConfig.register();
             KeysetHandle publicKeysetHandle = keysetHandle.getPublicKeysetHandle();
             PublicKeyVerify verifier = publicKeysetHandle.getPrimitive(PublicKeyVerify.class);
             verifier.verify(signature, data);

@@ -26,7 +26,7 @@ public class AppFacade {
     private static final String DIGITAL_SIGNATURE = "4";
 
     private static final String DEFAULT_AAD = "";
-    
+
 
     public void start() {
         try {
@@ -92,7 +92,7 @@ public class AppFacade {
         switch (type) {
             case AES:
                 AesCipher aesCipher = new AesCipher();
-                aesCipher.setKeysetHandle(keyFile);
+                aesCipher.withCleartextKeysetHandle(keyFile);
                 return Optional.of(aesCipher);
             case HMAC:
                 byte[] tag = new byte[0];
@@ -101,7 +101,7 @@ public class AppFacade {
                     tag = Files.readAllBytes(Paths.get(sc.nextLine()));
                 }
                 HmacCipher hmacCipher = new HmacCipher(tag);
-                hmacCipher.setKeysetHandle(keyFile);
+                hmacCipher.withCleartextKeysetHandle(keyFile);
                 return Optional.of(hmacCipher);
             case SHA:
                 return Optional.empty();
@@ -112,7 +112,7 @@ public class AppFacade {
                     signature = Files.readAllBytes(Paths.get(sc.nextLine()));
                 }
                 DigitalSignatureCipher dsc = new DigitalSignatureCipher(signature);
-                dsc.setKeysetHandle(keyFile);
+                dsc.withCleartextKeysetHandle(keyFile);
                 return Optional.of(dsc);
             default:
                 log.info("No action specified");

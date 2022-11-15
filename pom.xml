@@ -8,7 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>tink-tink</module>
-        <module>tink-demo</module>
+        <module>tink-example</module>
     </modules>
     <name>java-google-tink</name>
     <properties>

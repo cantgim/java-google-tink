@@ -13,7 +13,8 @@ public class HmacCipher extends Cipher {
 
     private final byte[] tag;
 
-    public HmacCipher(byte[] tag) {
+    public HmacCipher(byte[] tag) throws GeneralSecurityException {
+        MacConfig.register();
         this.tag = tag;
     }
 
@@ -21,7 +22,6 @@ public class HmacCipher extends Cipher {
     public Result encrypt(byte[] plain, byte[] aad) {
         try {
             log.info("Start encrypt with hmac");
-            MacConfig.register();
             Mac mac = keysetHandle.getPrimitive(Mac.class);
             try (FileOutputStream stream =
                          new FileOutputStream(String.valueOf(System.currentTimeMillis()))) {
@@ -41,7 +41,6 @@ public class HmacCipher extends Cipher {
     public Result decrypt(byte[] data, byte[] aad) {
         try {
             log.info("Start decrypt with hmac");
-            MacConfig.register();
             Mac mac = keysetHandle.getPrimitive(Mac.class);
             mac.verifyMac(tag, data);
             return Result.SUCCESS;
