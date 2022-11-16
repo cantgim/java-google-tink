@@ -1,10 +1,10 @@
 package vn.vnpay.tink.facade;
 
 import lombok.extern.slf4j.Slf4j;
-import vn.vnpay.tinktink.cipher.AesCipher;
+import vn.vnpay.tinktink.cipher.AeadCipher;
 import vn.vnpay.tinktink.cipher.Cipher;
 import vn.vnpay.tinktink.cipher.DigitalSignatureCipher;
-import vn.vnpay.tinktink.cipher.HmacCipher;
+import vn.vnpay.tinktink.cipher.MacCipher;
 import vn.vnpay.tinktink.result.Result;
 
 import java.io.IOException;
@@ -33,10 +33,7 @@ public class AppFacade {
             String cmd;
             do {
                 System.out.print(
-                        "1. encrypt/sign\n" +
-                                "2. decrypt/verify\n" +
-                                "0. Exit\n" +
-                                "Option: ");
+                        "1. encrypt/sign\n" + "2. decrypt/verify\n" + "0. Exit\n" + "Option: ");
                 cmd = sc.nextLine();
                 action(cmd);
             } while (EXIT.equals(cmd));
@@ -82,27 +79,27 @@ public class AppFacade {
         }
     }
 
-    private Optional<Cipher> selectCipherType(String option) throws IOException,
-            GeneralSecurityException {
-        System.out.print("What type of encryption u wanna use?\n" +
-                "1. AES\n2. HMAC\n3. SHA\n4. Digital Signature\nOption: ");
+    private Optional<Cipher> selectCipherType(String option)
+            throws IOException, GeneralSecurityException {
+        System.out.print(
+                "What type of encryption u wanna use?\n" + "1. AES\n2. HMAC\n3. SHA\n4. Digital " + "Signature\nOption: ");
         String type = sc.nextLine();
         System.out.print("Keyfile: ");
         String keyFile = sc.nextLine();
         switch (type) {
             case AES:
-                AesCipher aesCipher = new AesCipher();
-                aesCipher.withCleartextKeysetHandle(keyFile);
-                return Optional.of(aesCipher);
+                AeadCipher aeadCipher = new AeadCipher();
+                aeadCipher.withCleartextKeysetHandle(keyFile);
+                return Optional.of(aeadCipher);
             case HMAC:
                 byte[] tag = new byte[0];
                 if (DECRYPT.equals(option)) {
                     System.out.print("Your tag file: ");
                     tag = Files.readAllBytes(Paths.get(sc.nextLine()));
                 }
-                HmacCipher hmacCipher = new HmacCipher(tag);
-                hmacCipher.withCleartextKeysetHandle(keyFile);
-                return Optional.of(hmacCipher);
+                MacCipher macCipher = new MacCipher(tag);
+                macCipher.withCleartextKeysetHandle(keyFile);
+                return Optional.of(macCipher);
             case SHA:
                 return Optional.empty();
             case DIGITAL_SIGNATURE:

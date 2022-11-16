@@ -1,7 +1,7 @@
 package vn.vnpay.tinktink.cipher;
 
-import com.google.crypto.tink.Aead;
-import com.google.crypto.tink.aead.AeadConfig;
+import com.google.crypto.tink.Mac;
+import com.google.crypto.tink.mac.MacConfig;
 import lombok.extern.slf4j.Slf4j;
 import vn.vnpay.tinktink.result.Result;
 
@@ -9,27 +9,22 @@ import java.io.FileOutputStream;
 import java.security.GeneralSecurityException;
 
 @Slf4j
-public class AesCipher extends Cipher {
+public class MacCipher extends Cipher {
 
-    public AesCipher() throws GeneralSecurityException {
-        AeadConfig.register();
+    private final byte[] tag;
+
+    public MacCipher(byte[] tag) throws GeneralSecurityException {
+        MacConfig.register();
+        this.tag = tag;
     }
 
-    /**
-     * Encrypt data to file.
-     *
-     * @param plain Plain text as bytes
-     * @param aad   Associated data as bytes
-     * @return <code>Result<code/> status
-     * @see vn.vnpay.tinktink.result.Result
-     */
     @Override
     public Result encrypt(byte[] plain, byte[] aad) {
         try {
-            Aead aead = keysetHandle.getPrimitive(Aead.class);
+            Mac mac = keysetHandle.getPrimitive(Mac.class);
             try (FileOutputStream stream = new FileOutputStream(
                     String.valueOf(System.currentTimeMillis()))) {
-                stream.write(aead.encrypt(plain, aad));
+                stream.write(mac.computeMac(plain));
             }
             return Result.SUCCESS;
         } catch (GeneralSecurityException e) {
@@ -41,23 +36,15 @@ public class AesCipher extends Cipher {
         }
     }
 
-    /**
-     * @param cypher
-     * @param aad
-     * @return
-     */
     @Override
-    public Result decrypt(byte[] cypher, byte[] aad) {
+    public Result decrypt(byte[] data, byte[] aad) {
         try {
-            Aead aead = keysetHandle.getPrimitive(Aead.class);
-            try (FileOutputStream stream = new FileOutputStream(
-                    String.valueOf(System.currentTimeMillis()))) {
-                stream.write(aead.decrypt(cypher, aad));
-            }
+            Mac mac = keysetHandle.getPrimitive(Mac.class);
+            mac.verifyMac(tag, data);
             return Result.SUCCESS;
         } catch (GeneralSecurityException e) {
             log.error("Stack trace.", e);
-            return Result.DECRYPTION_FAILURE;
+            return Result.VERIFICATION_FAILURE;
         } catch (Exception e) {
             log.error("Stack trace.", e);
             return Result.FAILURE;

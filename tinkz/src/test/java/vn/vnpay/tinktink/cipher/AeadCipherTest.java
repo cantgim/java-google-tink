@@ -7,14 +7,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class AesCipherTest {
+public class AeadCipherTest {
 
     @Test
-    public void shouldReturnEncryptSuccess() {
-        AesCipher aesCipher = mock(AesCipher.class);
-        when(aesCipher.encrypt("This is plain text".getBytes(), "".getBytes())).thenReturn(
+    public void shouldEncrypt_success() {
+        AeadCipher aeadCipher = mock(AeadCipher.class);
+        when(aeadCipher.encrypt("This is plain text".getBytes(), "".getBytes())).thenReturn(
                 Result.SUCCESS);
         assertEquals(Result.SUCCESS,
-                aesCipher.encrypt("This is plain text".getBytes(), "".getBytes()));
+                aeadCipher.encrypt("This is plain text".getBytes(), "".getBytes()));
     }
 }
